@@ -9,13 +9,16 @@ import { FormsModule } from '@angular/forms';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import { EditMovieComponent } from './components/edit-movie/edit-movie.component';
+import { MovieService } from './original-movie.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MovieListComponent,
     MovieComponent,
-    AvatarModalComponent
+    AvatarModalComponent,
+    EditMovieComponent
   ],
   imports: [
     FormsModule,
@@ -24,7 +27,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserAnimationsModule,
     MatDialogModule,
   ],
-  providers: [],
+  providers: [MovieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
