@@ -5,12 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
 import { MovieComponent } from './components/movie/movie.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditMovieComponent } from './components/edit-movie/edit-movie.component';
 import { MovieService } from './original-movie.service';
+import { TrimDirective } from './trim.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MovieService } from './original-movie.service';
     MovieListComponent,
     MovieComponent,
     AvatarModalComponent,
-    EditMovieComponent
+    EditMovieComponent,
+    TrimDirective
   ],
   imports: [
     FormsModule,
@@ -26,6 +28,7 @@ import { MovieService } from './original-movie.service';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
+    ReactiveFormsModule
   ],
   providers: [MovieService],
   bootstrap: [AppComponent]
