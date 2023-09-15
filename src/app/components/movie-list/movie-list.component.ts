@@ -18,7 +18,8 @@ export class MovieListComponent {
 
 
   movies: Movie[] = this.movieService.getMovies();
-
+  isSuperUser: boolean = false;
+  showAdminButton: boolean = false;
   searchText: string = '';
   private searchTextSubject = new Subject<string>();
 
@@ -54,5 +55,12 @@ export class MovieListComponent {
       data: { avatarUrl },
     });
   }
-  
+
+  toggleAdminButton() {
+    this.showAdminButton = this.isSuperUser;
+  }
+
+  redirectToAdmin() {
+    this.router.navigate(['/admin']);
+  }
 }

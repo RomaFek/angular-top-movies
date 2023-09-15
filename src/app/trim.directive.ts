@@ -5,11 +5,11 @@ import { Directive, HostListener, ElementRef } from '@angular/core';
 })
 export class TrimDirective {
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   @HostListener('blur', ['$event.target.value'])
   onBlur(value: string): void {
     this.el.nativeElement.value = value.trim();
-    
+
   }
 }
