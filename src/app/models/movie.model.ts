@@ -4,5 +4,6 @@ export interface Movie {
     posterUrl: string,
     rating: number,
     description: string,
-    awardTitle: string,
+    hasAward: boolean
+    awards: string [],
 }

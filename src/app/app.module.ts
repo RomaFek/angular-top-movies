@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EditMovieComponent } from './components/edit-movie/edit-movie.component';
 import { MovieService } from './original-movie.service';
+import { TrimDirective } from './trim.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MovieService } from './original-movie.service';
     MovieListComponent,
     MovieComponent,
     AvatarModalComponent,
-    EditMovieComponent
+    EditMovieComponent,
+    TrimDirective
   ],
   imports: [
     FormsModule,
