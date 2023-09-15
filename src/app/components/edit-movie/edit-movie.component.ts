@@ -15,14 +15,24 @@ export class EditMovieComponent implements OnInit {
     title: '',
     posterUrl: '',
     rating: 0,
-    description: ''
+    description: '',
+    awardTitle: ''
   };
+
+  hasAwards: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private movieService: MovieService
   ) {}
+
+  toggleAwards() {
+    this.hasAwards = !this.hasAwards;
+    if (!this.hasAwards) {
+        this.movie.awardTitle = ''; // Сбросить название награды, если чекбокс "Награды" выключен
+    }
+}
 
   ngOnInit(): void {
     const movieId = this.route.snapshot.params['id'];

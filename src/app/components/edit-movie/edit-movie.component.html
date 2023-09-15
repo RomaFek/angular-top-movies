@@ -19,6 +19,11 @@
             <textarea id="description" name="description" class="form-control" [(ngModel)]="movie.description"
                 required></textarea>
         </div>
+        <div class="form-group">
+            <label for="awards">Награды:</label>
+            <input type="checkbox" id="awards" name="awards" (change)="toggleAwards()">
+            <input *ngIf="hasAwards" type="text" id="awardTitle" name="awardTitle" class="form-control" [(ngModel)]="movie.awardTitle">
+        </div>
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </div>
