@@ -1,0 +1,27 @@
+.movie__item {
+    display: flex;
+    align-items: center;
+}
+
+.movie__poster {
+    width: 500px;
+    height: auto;
+    margin: 20px;
+    border: 1px solid #ccc;
+}
+
+.movie__title {
+    font-size: 24px;
+    margin: 0;
+}
+
+.movie__rating {
+    font-size: 16px;
+    margin: 0;
+    color: #FFA500;
+}
+
+.movie__description {
+    font-size: 16px;
+    margin: 0;
+}
