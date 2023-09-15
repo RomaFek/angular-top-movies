@@ -15,7 +15,7 @@ export class MovieComponent implements OnInit {
     private route: ActivatedRoute,
     private movieService: MovieService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {

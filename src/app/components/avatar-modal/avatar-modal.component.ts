@@ -10,7 +10,7 @@ export class AvatarModalComponent {
   constructor(
     public dialogRef: MatDialogRef<AvatarModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   closeModal() {
     this.dialogRef.close();

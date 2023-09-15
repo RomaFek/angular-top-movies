@@ -1,6 +1,15 @@
-<div>
+<div class="admin">
+    <div class="checkbox-container">
+        <input type="checkbox" [(ngModel)]="isSuperUser" (change)="toggleAdminButton()" id="isSuperUser">
+        <label for="isSuperUser">Суперпользователь</label>
+    </div>
+
+    <button *ngIf="showAdminButton" (click)="redirectToAdmin()" class="admin-button">Админ</button>
+</div>
+
+<div class="search-container">
     <input type="text" [(ngModel)]="searchText" (ngModelChange)="onSearchTextChange($event)"
-        placeholder="Поиск по названию">
+        placeholder="Поиск по названию" class="search-input">
 </div>
 
 <div *ngFor="let movie of movies" class="movie-item">
