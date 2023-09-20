@@ -21,6 +21,7 @@ export class MovieComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
+
   ngOnInit() {
     this.movieSubscription = this.route.params.subscribe(params => {
       const movieId = +params['id'];

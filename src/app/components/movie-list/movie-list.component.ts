@@ -16,6 +16,10 @@ import { MovieService } from 'src/app/original-movie.service';
 
 export class MovieListComponent implements OnDestroy {
   movies: Movie[] = this.movieService.getMovies();
+
+  isSuperUser: boolean = false;
+  showAdminButton: boolean = false;
+
   searchText: string = '';
   private searchTextSubject = new Subject<string>();
   private searchTextSubscription: Subscription | undefined;
@@ -58,9 +62,20 @@ export class MovieListComponent implements OnDestroy {
     });
   }
 
+
   ngOnDestroy() {
     if (this.searchTextSubscription) {
       this.searchTextSubscription.unsubscribe();
     }
   }
+
+
+  toggleAdminButton() {
+    this.showAdminButton = this.isSuperUser;
+  }
+
+  redirectToAdmin() {
+    this.router.navigate(['/admin']);
+  }
 }
+

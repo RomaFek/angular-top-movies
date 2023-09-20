@@ -7,7 +7,8 @@
         </div>
         <div class="form-group">
             <label for="posterUrl">Ссылка на постер:</label>
-            <input type="text" id="posterUrl" name="posterUrl" class="form-control" [(ngModel)]="movie.posterUrl" required>
+            <input type="text" id="posterUrl" name="posterUrl" class="form-control" [(ngModel)]="movie.posterUrl"
+                required>
         </div>
         <div class="form-group">
             <label for="rating">Рейтинг:</label>
@@ -15,7 +16,8 @@
         </div>
         <div class="form-group">
             <label for="description">Описание:</label>
-            <textarea id="description" name="description" class="form-control" [(ngModel)]="movie.description" required></textarea>
+            <textarea id="description" name="description" class="form-control" [(ngModel)]="movie.description"
+                required></textarea>
         </div>
 
         <div class="form-group">
@@ -24,16 +26,11 @@
 
             <ng-container>
                 <div *ngFor="let award of movie.awards; let i = index" class="award-group">
-                    <input
-                        type="text"
-                        name="awardTitle{{ i }}"
-                        class="form-control"
-                        [(ngModel)]="movie.awards[i]"
-                        placeholder="Название награды"
-                        [disabled]="!movie.hasAward"
-                    >
+                    <input type="text" name="awardTitle{{ i }}" class="form-control" [(ngModel)]="movie.awards[i]"
+                        placeholder="Название награды" [disabled]="!movie.hasAward">
                 </div>
-                <button type="button" class="btn btn-success" (click)="addAward()" [disabled]="!movie.hasAward">Добавить награду</button>
+                <button type="button" class="btn btn-success" (click)="addAward()" [disabled]="!movie.hasAward">Добавить
+                    награду</button>
             </ng-container>
         </div>
         <button type="submit" class="btn btn-primary">Сохранить</button>
