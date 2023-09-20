@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieService } from '../../original-movie.service';
 import { Movie } from 'src/app/models/movie.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-movie',
   templateUrl: './edit-movie.component.html',
-  styleUrls: ['./edit-movie.component.css']
+  styleUrls: ['./edit-movie.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditMovieComponent implements OnInit {
+export class EditMovieComponent implements OnInit, OnDestroy {
   movie: Movie = {
     id: this.route.snapshot.params['id'],
     title: '',
@@ -19,10 +21,13 @@ export class EditMovieComponent implements OnInit {
     awards: []
   };
 
+  private movieSubscription: Subscription | undefined;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private cdRef: ChangeDetectorRef
   ) {
     this.movie.awards = [];
   }
@@ -30,9 +35,10 @@ export class EditMovieComponent implements OnInit {
   ngOnInit(): void {
     const movieId = this.route.snapshot.params['id'];
 
-    this.movieService.getMovieById(movieId).subscribe((data: Movie | undefined) => {
+    this.movieSubscription = this.movieService.getMovieById(movieId).subscribe((data: Movie | undefined) => {
       if (data) {
         this.movie = data;
+        this.cdRef.markForCheck();
       } else {
         console.log('Фильм не найден');
       }
@@ -51,15 +57,20 @@ export class EditMovieComponent implements OnInit {
 
   onSubmit(): void {
     if (this.movie.hasAward) {
-      this.movieService.editMovie(this.movie).subscribe(() => {
+      this.movieSubscription = this.movieService.editMovie(this.movie).subscribe(() => {
         this.router.navigate(['/movies', this.movie.id]);
       });
     } else {
       this.movie.awards = [];
-      this.movieService.editMovie(this.movie).subscribe(() => {
+      this.movieSubscription = this.movieService.editMovie(this.movie).subscribe(() => {
         this.router.navigate(['/movies', this.movie.id]);
       });
+    }
+  }
 
+  ngOnDestroy() {
+    if (this.movieSubscription) {
+      this.movieSubscription.unsubscribe();
     }
   }
 }

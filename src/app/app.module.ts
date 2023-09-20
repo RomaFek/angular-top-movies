@@ -28,7 +28,8 @@ import { TrimDirective } from './trim.directive';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
   ],
   providers: [MovieService],
   bootstrap: [AppComponent]
