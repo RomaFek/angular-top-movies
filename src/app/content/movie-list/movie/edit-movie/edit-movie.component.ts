@@ -32,7 +32,7 @@ export class EditMovieComponent implements OnInit, OnDestroy {
     this.movie.awards = [];
   }
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     const movieId = this.route.snapshot.params['id'];
     this.movieSubscription = this.movieService.getMovieById(movieId).subscribe((data: Movie | undefined) => {
       if (data) {

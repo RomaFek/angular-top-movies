@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 import {Movie} from 'src/app/content/movie-list/movie-models/movie.model';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged, Subject, Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {AvatarModalComponent} from './avatar-modal/avatar-modal.component';
 import {Router} from '@angular/router';
@@ -15,20 +14,20 @@ import {MovieService} from 'src/app/content/movie-list/original-movie.service';
 })
 
 export class MovieListComponent implements OnDestroy {
-  movies: Movie[] = this.movieService.getMovies();
+  public movies: Movie[] = this.movieService.getMovies();
 
-  isSuperUser: boolean = false;
-  showAdminButton: boolean = false;
+  public isSuperUser: boolean = false;
+  public showAdminButton: boolean = false;
 
-  searchText: string = '';
+  public searchText: string = '';
   private searchTextSubject = new Subject<string>();
-  private searchTextSubscription: Subscription | undefined;
+  private readonly searchTextSubscription: Subscription | undefined;
 
   constructor(
-    private movieService: MovieService,
-    private dialog: MatDialog,
-    private router: Router,
-    private cdr: ChangeDetectorRef
+    private readonly movieService: MovieService,
+    private readonly dialog: MatDialog,
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {
     this.searchTextSubscription = this.searchTextSubject
       .pipe(
@@ -41,11 +40,12 @@ export class MovieListComponent implements OnDestroy {
       });
   }
 
-  onSearchTextChange(text: string) {
+
+  public onSearchTextChange(text: string) {
     this.searchTextSubject.next(text);
   }
 
-  filterMovies(searchText: string) {
+  public filterMovies(searchText: string) {
     if (!searchText) {
       this.movies = this.movieService.getMovies();
       return;
@@ -56,7 +56,7 @@ export class MovieListComponent implements OnDestroy {
     });
   }
 
-  openModal(avatarUrl: string) {
+  public openModal(avatarUrl: string) {
     this.dialog.open(AvatarModalComponent, {
       data: {avatarUrl},
     });
@@ -70,11 +70,11 @@ export class MovieListComponent implements OnDestroy {
   }
 
 
-  toggleAdminButton() {
+  public toggleAdminButton() {
     this.showAdminButton = this.isSuperUser;
   }
 
-  redirectToAdmin() {
+  public redirectToAdmin() {
     this.router.navigate(['/admin']);
   }
 }

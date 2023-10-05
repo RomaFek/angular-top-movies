@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 
 @Component({
   selector: 'app-admin',
@@ -6,7 +6,7 @@ import { AfterViewInit, Component } from '@angular/core';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements AfterViewInit {
-  loaded = false;
+  public loaded = false;
 
   ngAfterViewInit() {
     setTimeout(() => {

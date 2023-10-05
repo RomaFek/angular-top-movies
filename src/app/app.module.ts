@@ -12,7 +12,6 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {EditMovieComponent} from './content/movie-list/movie/edit-movie/edit-movie.component';
 import {MovieService} from './content/movie-list/original-movie.service';
 import {TrimDirective} from './content/movie-list/trim.directive';
-import {MovieFilterDirective} from './content/movie-list/movie-filter.directive';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import {MovieFilterDirective} from './content/movie-list/movie-filter.directive'
     AvatarModalComponent,
     EditMovieComponent,
     TrimDirective,
-    MovieFilterDirective
   ],
   imports: [
     FormsModule,
