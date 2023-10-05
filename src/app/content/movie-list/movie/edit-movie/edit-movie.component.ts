@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MovieService } from '../../original-movie.service';
-import { Movie } from 'src/app/models/movie.model';
-import { Subscription } from 'rxjs';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MovieService} from '../../original-movie.service';
+import {Movie} from 'src/app/content/movie-list/movie-models/movie.model';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-edit-movie',
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditMovieComponent implements OnInit, OnDestroy {
-  movie: Movie = {
+  public movie: Movie = {
     id: this.route.snapshot.params['id'],
     title: '',
     posterUrl: '',
@@ -20,7 +20,7 @@ export class EditMovieComponent implements OnInit, OnDestroy {
     hasAward: false,
     awards: []
   };
-
+  public tempAward: string = '';
   private movieSubscription: Subscription | undefined;
 
   constructor(
@@ -32,9 +32,8 @@ export class EditMovieComponent implements OnInit, OnDestroy {
     this.movie.awards = [];
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const movieId = this.route.snapshot.params['id'];
-
     this.movieSubscription = this.movieService.getMovieById(movieId).subscribe((data: Movie | undefined) => {
       if (data) {
         this.movie = data;
@@ -45,30 +44,31 @@ export class EditMovieComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleAwards() {
+  public addAward(): void {
     if (this.movie.hasAward) {
-      this.movie.awards = [];
+      if (this.tempAward) {
+        this.movie.awards.push(this.tempAward);
+        this.tempAward = '';
+      }
     }
   }
 
-  addAward(): void {
-    this.movie.awards.push('');
+
+  private editMovieAndNavigate(): void {
+    this.movieSubscription = this.movieService.editMovie(this.movie).subscribe(() => {
+      this.router.navigate(['/movies', this.movie.id]);
+    });
   }
 
-  onSubmit(): void {
-    if (this.movie.hasAward) {
-      this.movieSubscription = this.movieService.editMovie(this.movie).subscribe(() => {
-        this.router.navigate(['/movies', this.movie.id]);
-      });
-    } else {
+  public onSubmit(): void {
+    if (!this.movie.hasAward) {
       this.movie.awards = [];
-      this.movieSubscription = this.movieService.editMovie(this.movie).subscribe(() => {
-        this.router.navigate(['/movies', this.movie.id]);
-      });
     }
+    this.editMovieAndNavigate();
   }
 
-  ngOnDestroy() {
+
+  public ngOnDestroy() {
     if (this.movieSubscription) {
       this.movieSubscription.unsubscribe();
     }

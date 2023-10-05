@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-avatar-modal',
@@ -10,9 +10,13 @@ export class AvatarModalComponent {
   constructor(
     public dialogRef: MatDialogRef<AvatarModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {
+  }
 
-  closeModal() {
+  public ava = this.data.avatarUrl
+
+
+  public closeModal() {
     this.dialogRef.close();
   }
 }

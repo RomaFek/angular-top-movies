@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Movie } from './models/movie.model';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Movie} from './movie-models/movie.model';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -107,24 +107,24 @@ export class MovieService {
     }
   }
 
-  getMovies(): Movie[] {
+  public getMovies(): Movie[] {
     return this.originalMovies;
   }
 
-  getMovieById(id: number): Observable<Movie | undefined> {
+  public getMovieById(id: number): Observable<Movie | undefined> {
     return of(this.originalMovies.find(movie => movie.id == id))
   }
 
-  editMovie(movie: Movie): Observable<any> {
+  public editMovie(movie: Movie): Observable<Movie> {
     this.saveMoviesToLocalStorage();
 
-    return new Observable<any>((observer) => {
+    return new Observable<Movie>((observer) => {
       observer.next();
       observer.complete();
     });
   }
 
-  saveMoviesToLocalStorage() {
+  public saveMoviesToLocalStorage() {
     localStorage.setItem(this.localStorageKey, JSON.stringify(this.originalMovies));
   }
 }

@@ -1,17 +1,18 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { MovieListComponent } from './components/movie-list/movie-list.component';
-import { MovieComponent } from './components/movie/movie.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AvatarModalComponent } from './components/avatar-modal/avatar-modal.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import { EditMovieComponent } from './components/edit-movie/edit-movie.component';
-import { MovieService } from './original-movie.service';
-import { TrimDirective } from './trim.directive';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {MovieListComponent} from './content/movie-list/movie-list.component';
+import {MovieComponent} from './content/movie-list/movie/movie.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AvatarModalComponent} from './content/movie-list/avatar-modal/avatar-modal.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
+import {EditMovieComponent} from './content/movie-list/movie/edit-movie/edit-movie.component';
+import {MovieService} from './content/movie-list/original-movie.service';
+import {TrimDirective} from './content/movie-list/trim.directive';
+import {MovieFilterDirective} from './content/movie-list/movie-filter.directive';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TrimDirective } from './trim.directive';
     MovieComponent,
     AvatarModalComponent,
     EditMovieComponent,
-    TrimDirective
+    TrimDirective,
+    MovieFilterDirective
   ],
   imports: [
     FormsModule,
@@ -29,9 +31,10 @@ import { TrimDirective } from './trim.directive';
     BrowserAnimationsModule,
     MatDialogModule,
     ReactiveFormsModule,
-    
+
   ],
   providers: [MovieService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

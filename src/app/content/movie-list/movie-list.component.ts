@@ -1,17 +1,17 @@
-import { Component, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Movie } from 'src/app/models/movie.model';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Subject, Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { AvatarModalComponent } from '../avatar-modal/avatar-modal.component';
-import { Router } from '@angular/router';
-import { MovieService } from 'src/app/original-movie.service';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
+import {Movie} from 'src/app/content/movie-list/movie-models/movie.model';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject, Subscription} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {AvatarModalComponent} from './avatar-modal/avatar-modal.component';
+import {Router} from '@angular/router';
+import {MovieService} from 'src/app/content/movie-list/original-movie.service';
 
 @Component({
   selector: 'app-movie-list',
   templateUrl: './movie-list.component.html',
   styleUrls: ['./movie-list.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush 
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MovieListComponent implements OnDestroy {
@@ -58,7 +58,7 @@ export class MovieListComponent implements OnDestroy {
 
   openModal(avatarUrl: string) {
     this.dialog.open(AvatarModalComponent, {
-      data: { avatarUrl },
+      data: {avatarUrl},
     });
   }
 

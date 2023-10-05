@@ -1,14 +1,15 @@
-import { Directive, HostListener, ElementRef } from '@angular/core';
+import {Directive, ElementRef, HostListener} from '@angular/core';
 
 @Directive({
   selector: '[appTrim]'
 })
 export class TrimDirective {
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef) {
+  }
 
   @HostListener('blur', ['$event.target.value'])
-  onBlur(value: string): void {
+  public onBlur(value: string): void {
     this.el.nativeElement.value = value.trim();
 
   }
