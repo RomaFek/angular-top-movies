@@ -1,0 +1,40 @@
+<div class="container">
+  <h2>Изменение фильма:</h2>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Название:</label>
+      <input type="text" appTrim id="title" name="title" class="form-control" formControlName="title">
+    </div>
+    <div class="form-group">
+      <label for="posterUrl">Ссылка на постер:</label>
+      <input type="text" id="posterUrl" name="posterUrl" class="form-control" formControlName="posterUrl">
+    </div>
+    <div class="form-group">
+      <label for="rating">Рейтинг:</label>
+      <input type="number" id="rating" name="rating" class="form-control" formControlName="rating">
+    </div>
+    <div class="form-group">
+      <label for="description">Описание:</label>
+      <textarea id="description" name="description" class="form-control" formControlName="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="awards">Награды:</label>
+      <input type="checkbox" id="awards" name="awards" formControlName="hasAward" (change)="toggleTempAward()">
+
+      <ng-container>
+        <input type="text" name="awardTitle" class="form-control" formControlName="tempAward"
+               placeholder="Название награды">
+
+        <div *ngFor="let award of movie.awards" class="award-group">
+          <p>{{award}}</p>
+        </div>
+        <button type="button" class="btn btn-success" (click)="addAward()"
+                [disabled]="!this.editForm.get('hasAward')?.value">Добавить
+          награду
+        </button>
+      </ng-container>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+  </form>
+</div>
