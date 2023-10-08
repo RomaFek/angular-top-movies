@@ -14,7 +14,15 @@ import {takeUntil} from "rxjs";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditMovieComponent implements OnInit {
-    public editForm!: FormGroup
+    public editForm!: FormGroup<{
+        title: FormControl<string | null>;
+        posterUrl: FormControl<string | null>;
+        rating: FormControl<number | null>;
+        description: FormControl<string | null>;
+        hasAward: FormControl<boolean | null>;
+        awards: FormControl<string[] | null>;
+        tempAward: FormControl<string | null>;
+    }>
     public movie!: Movie
 
     public tempAward: string = '';
@@ -50,21 +58,21 @@ export class EditMovieComponent implements OnInit {
                 console.log('Фильм не найден');
             }
         });
-    }
-
-    public toggleTempAward(): void {
-        const hasAwardControl = this.editForm.get('hasAward');
-
-        if (hasAwardControl?.value) {
-            this.editForm.get('tempAward')?.enable();
-        } else {
-            this.editForm.get('tempAward')?.disable();
-        }
+        this.editForm.get('hasAward')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value: boolean | null) => {
+            if (value !== null) {
+                if (value) {
+                    this.editForm.controls.tempAward.enable();
+                } else {
+                    this.editForm.controls.tempAward.disable();
+                }
+            }
+        });
     }
 
     public addAward(): void {
-        this.tempAward = this.editForm.get('tempAward')?.value;
-        if (this.tempAward) {
+        const tempAwardValue = this.editForm.controls.tempAward.value;
+        if (tempAwardValue !== null && tempAwardValue !== undefined) {
+            this.tempAward = tempAwardValue;
             this.movie.awards.push(this.tempAward);
             this.tempAward = '';
         }
@@ -72,12 +80,14 @@ export class EditMovieComponent implements OnInit {
 
 
     public onSubmit(): void {
-        this.movie.title = this.editForm.get('title')?.value;
-        this.movie.posterUrl = this.editForm.get('posterUrl')?.value;
-        this.movie.rating = this.editForm.get('rating')?.value;
-        this.movie.description = this.editForm.get('description')?.value;
-        this.movie.hasAward = this.editForm.get('hasAward')?.value;
-        this.tempAward = this.editForm.get('tempAward')?.value;
+        this.movie.title = this.editForm.controls.title.value as string;
+        this.movie.posterUrl = this.editForm.controls.posterUrl.value as string;
+        this.tempAward = this.editForm.controls.tempAward.value as string;
+        this.movie.description = this.editForm.controls.description.value as string;
+        const ratingValue = this.editForm.controls.rating.value;
+        this.movie.rating = typeof ratingValue === 'number' ? ratingValue : 0;
+        const hasAwardValue = this.editForm.controls.hasAward.value;
+        this.movie.hasAward = typeof hasAwardValue === 'boolean' ? hasAwardValue : false;
         if (!this.movie.hasAward) {
             this.movie.awards = [];
         }

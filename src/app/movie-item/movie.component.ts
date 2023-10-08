@@ -3,7 +3,7 @@ import {Movie} from '../movie-list/models/movie.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MovieService} from 'src/app/movie-list/service/original-movie.service';
 import {DestroyService} from "../shared/service/destroy.service";
-import {switchMap, takeUntil} from "rxjs";
+import {map, Observable, switchMap, takeUntil} from "rxjs";
 
 @Component({
     selector: 'app-movie-item',
@@ -13,7 +13,7 @@ import {switchMap, takeUntil} from "rxjs";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieComponent implements OnInit {
-    public movie!: Movie
+    public movie$!: Observable<Movie | undefined>;
 
     constructor(
         private route: ActivatedRoute,
@@ -25,26 +25,18 @@ export class MovieComponent implements OnInit {
 
 
     ngOnInit() {
-        this.route.params.pipe(
-            switchMap(params => {
-                const movieId = +params['id'];
-                return this.movieService.getMovieById(movieId);
-            })
-        ).pipe(takeUntil(this.destroy$)).subscribe(
-            (movie: Movie | undefined) => {
-                if (movie) {
-                    this.movie = movie;
-                } else {
-                    console.log('Фильм не найден');
-                }
-            }
+        this.movie$ = this.route.params.pipe(
+            map(movieId => +movieId['id']),
+            switchMap(movieId => this.movieService.getMovieById(movieId)),
         );
     }
 
-
     public editMovie() {
-        this.router.navigate(['/editmovie', this.movie.id])
+        this.movie$.pipe(takeUntil(this.destroy$)).subscribe(movie => {
+            if (movie) {
+                this.router.navigate(['/editmovie', movie.id]);
+            }
+        });
     }
-
 
 }

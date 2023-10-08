@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Movie} from 'src/app/movie-list/models/movie.model';
-import {debounceTime, distinctUntilChanged, Subject, takeUntil} from 'rxjs';
+import {debounceTime, distinctUntilChanged, Observable, of, startWith, Subject, switchMap, takeUntil} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {AvatarModalComponent} from '../../avatar-modal/avatar-modal.component';
 import {Router} from '@angular/router';
@@ -13,15 +13,13 @@ import {DestroyService} from "../../shared/service/destroy.service";
     templateUrl: './movie-list.component.html',
     styleUrls: ['./movie-list.component.css'],
     providers: [DestroyService],
-    // changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieListComponent {
-    public adminCheck!: FormGroup;
-    public searchMovie!: FormGroup;
-    public movies: Movie[] = this.movieService.getMovies();
-    public showAdminButton: boolean = false;
-
-    // public searchText: string = '';
+    public adminCheck!: FormGroup<{ isSuperUser: FormControl<boolean | null> }>;
+    public searchMovie!: FormGroup<{ searchText: FormControl<string | null> }>;
+    public movies$: Observable<Movie[]>
+    public showAdminButton: boolean | null = false;
     private searchTextSubject = new Subject<string>();
 
     constructor(
@@ -37,30 +35,27 @@ export class MovieListComponent {
         this.searchMovie = new FormGroup({
             searchText: new FormControl(''),
         });
+        this.movies$ = this.searchTextSubject.pipe(
+            startWith(''),
+            debounceTime(500),
+            distinctUntilChanged(),
+            switchMap(searchText => {
+                if (!searchText) {
+                    return of(this.movieService.getMovies());
+                }
+                return of(this.movieService.getMovies().filter(movie => {
+                    return movie.title.toLowerCase().includes(searchText.toLowerCase());
+                }));
+            }),
+        );
 
-        this.searchTextSubject
-            .pipe(
-                debounceTime(500),
-                distinctUntilChanged()
-            )
-            .pipe(takeUntil(this.destroy$)).subscribe(searchText => {
-            this.filterMovies(searchText);
-        });
+        this.searchMovie.controls.searchText.valueChanges.pipe(
+            takeUntil(this.destroy$)
+        )
+            .subscribe(searchText => {
+                this.searchTextSubject.next(searchText as string);
+            });
 
-        this.searchMovie.get('searchText')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((text) => {
-            this.searchTextSubject.next(text);
-        });
-    }
-
-    public filterMovies(searchText: string) {
-        if (!searchText) {
-            this.movies = this.movieService.getMovies();
-            return;
-        }
-
-        this.movies = this.movieService.getMovies().filter(movie => {
-            return movie.title.toLowerCase().includes(searchText.toLowerCase());
-        });
     }
 
     public openModal(avatarUrl: string) {
@@ -70,7 +65,8 @@ export class MovieListComponent {
     }
 
     public toggleAdminButton() {
-        this.showAdminButton = this.adminCheck.get('isSuperUser')?.value;
+        this.showAdminButton = this.adminCheck.controls.isSuperUser.value;
+
     }
 
     public redirectToAdmin() {

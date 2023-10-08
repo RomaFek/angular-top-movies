@@ -26,11 +26,8 @@ export class MovieService {
 
     public editMovie(movie: Movie): Observable<void> {
         this.saveMoviesToLocalStorage();
+        return of(undefined);
 
-        return new Observable<void>((observer) => {
-            observer.next();
-            observer.complete();
-        });
     }
 
     public saveMoviesToLocalStorage() {
