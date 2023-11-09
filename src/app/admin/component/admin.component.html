@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="loaderArea" *ngIf="!loaded" [ngClass]="{ 'loaded_hiding': loaded, 'loaded': !loaded }">
+    <div class="loaderArea" *ngIf="!(loaded$ | async)">
         <div class="loader"></div>
     </div>
     <div class="hello">Привет Админ!</div>

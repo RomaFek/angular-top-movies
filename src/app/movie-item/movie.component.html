@@ -1,0 +1,12 @@
+<ng-container *ngIf="movie$ | async as movie">
+    <div class="movie__item">
+        <img [src]="movie.posterUrl" alt="{{ movie.title }}" class="movie__poster">
+        <div class="movie__details">
+            <h2 class="movie__title">{{ movie.title }}</h2>
+            <p class="movie__rating">Рейтинг: {{ movie.rating }}</p>
+            <p class="movie__description">{{ movie.description }}</p>
+        </div>
+        <button (click)="editMovie()">Редактировать</button>
+    </div>
+</ng-container>
+
